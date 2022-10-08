@@ -1,0 +1,110 @@
+<?php
+$titre="/consultationAttributions";
+include("_debut.inc.php");
+include("_gestionBase.inc.php"); 
+include("_controlesEtGestionErreurs.inc.php");
+
+echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
+   <tr>
+   <td align='center'><a href='index.php'>Accueil ></a> consultationAttributions</td>
+   </tr>
+</table>
+<br>";
+
+// CONNEXION AU SERVEUR MYSQL PUIS SÉLECTION DE LA BASE DE DONNÉES festival
+
+$connexion=connect();
+if (!$connexion)
+{
+   ajouterErreur("Echec de la connexion au serveur MySql");
+   afficherErreurs();
+   exit();
+}
+/*if (!selectBase($connexion))
+{
+   ajouterErreur("La base de données festival est inexistante ou non accessible");
+   afficherErreurs();
+   exit();
+}*/
+
+// CONSULTER LES ATTRIBUTIONS DE TOUS LES ÉTABLISSEMENTS
+
+// IL FAUT QU'IL Y AIT AU MOINS UN ÉTABLISSEMENT OFFRANT DES CHAMBRES POUR  
+// AFFICHER LE LIEN VERS LA MODIFICATION
+$nbEtab=obtenirNbEtabOffrantChambres($connexion);
+if ($nbEtab!=0)
+{
+   echo "
+   <table width='75%' cellspacing='0' cellpadding='0' align='center'
+   <tr><td>
+   <a href='modificationAttributions.php?action=demanderModifAttrib'>
+   Effectuer ou modifier les attributions</a></td></tr></table><br><br>";
+   
+   // POUR CHAQUE ÉTABLISSEMENT : AFFICHAGE D'UN TABLEAU COMPORTANT 2 LIGNES 
+   // D'EN-TÊTE ET LE DÉTAIL DES ATTRIBUTIONS
+   $req=obtenirReqEtablissementsAyantChambresAttribuées();
+   $rsEtab=$connexion-> query($req);
+   $lgEtab=$rsEtab->fetchAll();
+   // BOUCLE SUR LES ÉTABLISSEMENTS AYANT DÉJÀ DES CHAMBRES ATTRIBUÉES
+   foreach ($lgEtab as $row)
+   {
+      $idEtab=$row['id'];
+      $nomEtab=$row['nom'];
+   
+      echo "
+      <table width='75%' cellspacing='0' cellpadding='0' align='center' 
+      class='tabQuadrille'>";
+      
+      $nbOffre=$row["nombreChambresOffertes"];
+      $nbOccup=obtenirNbOccup($connexion, $idEtab);
+      // Calcul du nombre de chambres libres dans l'établissement
+      $nbChLib = $nbOffre - $nbOccup;
+      
+      // AFFICHAGE DE LA 1ÈRE LIGNE D'EN-TÊTE 
+      echo "
+      <tr class='enTeteTabQuad'>
+         <td colspan='3' align='left'><strong>$nomEtab</strong>&nbsp;
+         (Offre : $nbOffre&nbsp;&nbsp;Disponibilités : $nbChLib)
+         </td>
+      </tr>";
+          
+      // AFFICHAGE DE LA 2ÈME LIGNE D'EN-TÊTE 
+      echo "
+      <tr class='ligneTabQuad'>
+         <td width='40%' align='left'><i><strong>Nom groupe</strong></i></td>
+         <td width = '40%' align ='left'><i><strong>Pays groupe</strong></i></td>
+         <td width='20%' align='left'><i><strong>Chambres attribuées</strong></i>
+         </td>
+      </tr>";
+        
+      // AFFICHAGE DU DÉTAIL DES ATTRIBUTIONS : UNE LIGNE PAR GROUPE AFFECTÉ 
+      // DANS L'ÉTABLISSEMENT       
+      $req=obtenirReqGroupesEtab($idEtab);
+      $rsGroupe=$connexion->query($req);
+      $lgGroupe=$rsGroupe->fetchAll();
+               
+      // BOUCLE SUR LES GROUPES (CHAQUE GROUPE EST AFFICHÉ EN LIGNE)
+      foreach($lgGroupe as $row)
+      {
+         $idGroupe=$row['id'];//modification du nom pour coéhrence avec celui de la base de donnée
+         $nomGroupe=$row['nom'];//pareil ici
+         $nomPays=$row['nomPays'];
+         echo "
+         <tr class='ligneTabQuad'>
+            <td width='40%' align='left'>$nomGroupe </td>
+            <td width = '20%' align ='left'>$nomPays</td>";
+
+         // On recherche si des chambres ont déjà été attribuées à ce groupe
+         // dans l'établissement
+         $nbOccupGroupe=obtenirNbOccupGroupe($connexion, $idEtab, $idGroupe);
+         echo "
+            <td width='20%' align='left'>$nbOccupGroupe</td>
+         </tr>";
+      } // Fin de la boucle sur les groupes
+      
+      echo "
+      </table><br>";
+   } // Fin de la boucle sur les établissements
+}
+
+?>
