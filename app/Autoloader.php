@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace App;
 
 /**
  * class Autoloader
@@ -8,17 +8,17 @@ namespace Core;
 class Autoloader {
 
     /**
-     * Enregistre notre autoloader
-     */
+    * Enregistre notre autoloader
+    */
     static function register()
     {
         spl_autoload_register(array(__CLASS__, 'autoload'));
     }
 
     /**
-     * Inclue le fichier correspondant à notre classe
-     * @param string $class le nom de la classe à charger
-     */
+    * Inclue le fichier correspondant à notre classe
+    * @param string $class le nom de la classe à charger
+    */
     static function autoload($class)
     {
         if (strpos($class, __NAMESPACE__ . '\\') === 0) {
