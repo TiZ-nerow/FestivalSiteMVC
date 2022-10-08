@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller;
 
-class HomeController
+class HomeController extends Controller
 {
 
-    public function index() {
-        var_dump('Home index called');
+    public function index()
+    {
+        return $this->render('home');
     }
 
 }
