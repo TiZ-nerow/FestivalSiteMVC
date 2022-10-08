@@ -44,7 +44,7 @@ class Model
     {
         $instance = self::getInstance();
 
-        return $instance->db->prepare("SELECT * FROM {$instance->table} WHERE id = ?", [$id], true, get_called_class());
+        return $instance->db->prepare("SELECT * FROM {$instance->table} WHERE id = ?", [$id], get_called_class())->first();
     }
 
 }

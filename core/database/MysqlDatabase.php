@@ -11,6 +11,7 @@ class MysqlDatabase extends Database
     private $db_pass;
     private $db_host;
     private $pdo;
+    private $req;
 
     public function __construct($db_name, $db_user = 'root', $db_pass = 'root', $db_host = 'localhost')
     {
@@ -30,7 +31,7 @@ class MysqlDatabase extends Database
         return $this->pdo;
     }
 
-    public function query($statement, $one = false, $class_name = null)
+    public function query($statement, $class_name = null)
     {
         $req = $this->getPDO()->query($statement);
 
@@ -44,15 +45,12 @@ class MysqlDatabase extends Database
         else
             $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
 
-        if ($one)
-            $datas = $req ->fetch();
-        else
-            $datas = $req ->fetchAll();
+        $this->req = $req;
 
-        return $datas;
+        return $this;
     }
 
-    public function prepare($statement, $attributes, $one = false, $class_name = null)
+    public function prepare($statement, $attributes, $class_name = null)
     {
         $req = $this->getPDO()->prepare($statement);
         $res = $req->execute($attributes);
@@ -67,12 +65,25 @@ class MysqlDatabase extends Database
         else
             $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
 
-        if ($one)
-            $datas = $req ->fetch();
-        else
-            $datas = $req ->fetchAll();
+        $this->req = $req;
 
-        return $datas;
+        return $this;
+    }
+
+    public function get()
+    {
+        if (is_null($this->req))
+            return null;
+
+        return $this->req->fetchAll();
+    }
+
+    public function first()
+    {
+        if (is_null($this->req))
+            return null;
+
+        return $this->req->fetch();
     }
 
     public function lastInsertId()
