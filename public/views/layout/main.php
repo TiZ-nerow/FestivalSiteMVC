@@ -6,8 +6,8 @@
     <title><?= config('app.title') ?></title>
 </head>
 <body>
+    <?= view('components/message') ?>
 
     <?= $content ?>
-
 </body>
 </html>

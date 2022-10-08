@@ -19,7 +19,7 @@ class Controller
         extract($variables);
         require($this->viewPath . str_replace('.', '/', $view) . '.php');
         $content = ob_get_clean();
-        require($this->viewPath . 'layout/' . $this->template . '.php' );
+        require($this->viewPath . 'layout/' . $this->template . '.php');
     }
 
     protected function notFound()

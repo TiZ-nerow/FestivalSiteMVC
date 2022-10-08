@@ -19,3 +19,13 @@ function config($args, $default = null)
 
     return $res;
 }
+
+function view($view, $args = [])
+{
+    require ROOT . '/public/views/' . php($view);
+}
+
+function php($name)
+{
+    return str_replace('.php', '', $name) . '.php';
+}
