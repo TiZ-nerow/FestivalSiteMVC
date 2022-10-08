@@ -29,3 +29,14 @@ function php($name)
 {
     return str_replace('.php', '', $name) . '.php';
 }
+
+function css($files)
+{
+    $res = '';
+
+    foreach ($files as $file) {
+        $res .= "<link href=\"public/css/$file.css\" rel=\"stylesheet\" type=\"text/css\">\n";
+    }
+
+    return $res;
+}
