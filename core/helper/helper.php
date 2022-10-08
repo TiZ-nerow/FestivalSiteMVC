@@ -1,11 +1,21 @@
 <?php
 
-function config($file)
+function config($args, $default = null)
 {
-    $path = ROOT . '/config/' . $file . '.php';
+    $path = ROOT . '/config';
 
-    if (!file_exists($path))
-        return null;
+    $res = null;
 
-    return require $path;
+    foreach (explode('.', $args) as $arg) {
+        $path .= '/' . $arg;
+        if (!is_null($res))
+            if (isset($res[$arg]))
+                $res = $res[$arg];
+            else
+                return $default;
+        else if (file_exists($path . '.php'))
+            $res = require $path . '.php';
+    }
+
+    return $res;
 }
