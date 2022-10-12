@@ -41,11 +41,26 @@ class Model
         return $instance->db->prepare("SELECT * FROM {$instance->table} WHERE id = ?", [$id], get_called_class())->first();
     }
 
+    public static function exist($fields)
+    {
+        $instance = self::getInstance();
+
+        $sql_parts = [];
+        $attributes = [];
+        foreach( $fields as $k => $v ) {
+            $sql_parts[] = "$k = ?";
+            $attributes[] = $v;
+        }
+        $sql_part = implode(' AND ', $sql_parts);
+
+        return $instance->db->prepare("SELECT * FROM $instance->table WHERE $sql_part", $attributes, get_called_class())->first();
+    }
+
     public static function total()
     {
         $instance = self::getInstance();
 
-        return $instance->query('SELECT COUNT(*) FROM ' . $instance->table, get_called_class())->first();
+        return $instance->db->query('SELECT COUNT(*) FROM ' . $instance->table, get_called_class())->first();
     }
 
     public static function extract($key, $value) {
@@ -69,7 +84,7 @@ class Model
         }
         $sql_part = implode(',', $sql_parts);
 
-        return $instance->query("INSERT INTO {$instance->table} SET $sql_part", $attributes, get_called_class())->first();
+        return $instance->db->prepare("INSERT INTO {$instance->table} SET $sql_part", $attributes);
     }
 
     public function update($fields)
@@ -83,12 +98,12 @@ class Model
         $attributes[] = $this->id;
         $sql_part = implode(',', $sql_parts);
 
-        return $this->query("UPDATE {$this->table} SET $sql_part WHERE id = ?", $attributes)->first();
+        return $this->prepare("UPDATE {$this->table} SET $sql_part WHERE id = ?", $attributes);
     }
 
     public function delete()
     {
-        return $this->query("DELETE FROM {$this->table} WHERE id = ?", [$this->id])->first();
+        return $this->prepare("DELETE FROM {$this->table} WHERE id = ?", [$this->id]);
     }
 
 }

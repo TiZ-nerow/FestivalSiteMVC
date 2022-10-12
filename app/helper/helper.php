@@ -45,49 +45,43 @@ function verifierDonneesEtabM($connexion, $id, $nom, $adresseRue, $codePostal,
    if ($nombreChambresOffertes!="" && (!estEntier($nombreChambresOffertes) ||
        !estModifOffreCorrecte($connexion, $id, $nombreChambresOffertes)))
    {
-      ajouterErreur
-      ("La valeur de l'offre est non entière ou inférieure aux attributions effectuées");
+      ajouterErreur("La valeur de l'offre est non entière ou inférieure aux attributions effectuées");
    }
 }
 
 // Fonction qui vérifie la saisie lors de la création d'un établissement.
 // Pour chaque champ non valide, un message est ajouté à la liste des erreurs
-function verifierDonneesEtabC($connexion, $id, $nom, $adresseRue, $codePostal,
-                              $ville, $tel, $nomResponsable, $nombreChambresOffertes)
+function verifierDonneesEtabC()
 {
-   if ($id=="" || $nom=="" || $adresseRue=="" || $codePostal=="" || $ville==""
-       || $tel=="" || $nomResponsable=="" || $nombreChambresOffertes=="")
-   {
-      ajouterErreur("Chaque champ suivi du caractère * est obligatoire");
-   }
-   if($id!="")
-   {
-      // Si l'id est constitué d'autres caractères que de lettres non accentuées
-      // et de chiffres, une erreur est générée
-      if (!estChiffresOuEtLettres($id))
-      {
-         ajouterErreur("L'identifiant doit comporter uniquement des lettres non accentuées et des chiffres");
-      }
-      else
-      {
-         if (estUnIdEtablissement($connexion, $id))
-         {
-            ajouterErreur("L'établissement $id existe déjà");
-         }
-      }
-   }
-   if ($nom!="" && estUnNomEtablissement($connexion, 'C', $id, $nom))
-   {
-      ajouterErreur("L'établissement $nom existe déjà");
-   }
-   if ($codePostal!="" && !estUnCp($codePostal))
-   {
-      ajouterErreur("Le code postal doit comporter 5 chiffres");
-   }
-   if ($nombreChambresOffertes!="" && !estEntier($nombreChambresOffertes))
-   {
-      ajouterErreur ("La valeur de l'offre doit être un entier");
-   }
+    $obligatoires = ['id', 'nom', 'adresseRue', 'codePostal', 'ville', 'tel', 'nomResponsable', 'nombreChambresOffertes'];
+    foreach ($obligatoires as $key) {
+        if (is_null(get($key)) || get($key) == '') {
+            ajouterErreur("Chaque champ suivi du caractère * est obligatoire");
+            break;
+        }
+    }
+
+    // Si l'id est constitué d'autres caractères que de lettres non accentuées
+    // et de chiffres, une erreur est générée
+    if (get('id') != '' && !estChiffresOuEtLettres(get('id'))) {
+        ajouterErreur("L'identifiant doit comporter uniquement des lettres non accentuées et des chiffres");
+    } else {
+        if (\App\Model\Etablissement::find(get('id'))) {
+            ajouterErreur('L\'établissement ' . get('id') . ' existe déjà');
+        }
+    }
+
+    if (get('nom') != '' && \App\Model\Etablissement::exist(['nom' => get('nom')])) {
+        ajouterErreur('L\'établissement' . get('nom') . 'existe déjà');
+    }
+
+    if (get('codePostal') != '' && !estUnCp(get('codePostal'))) {
+        ajouterErreur("Le code postal doit comporter 5 chiffres");
+    }
+
+    if (get('nombreChambresOffertes') != '' && !estEntier(get('nombreChambresOffertes'))) {
+        ajouterErreur ("La valeur de l'offre doit être un entier");
+    }
 }
 
 // FONCTIONS DE GESTION DES ERREURS

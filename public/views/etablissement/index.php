@@ -1,15 +1,15 @@
 <table width='80%' cellpadding='0' cellspacing='0' align='center'>
     <tr>
-        <td align='center'><a href='?p=home'>Accueil</a> listeEtablissements</td>
+        <td align='center'><a href='?p=home'>Accueil</a> > listeEtablissements</td>
     </tr>
 </table>
 
 <br>
 
 <table width='70%' cellspacing='0' cellpadding='0' align='center' class='tabNonQuadrille'>
-   <tr class='enTeteTabNonQuad'>
-      <td colspan='4'>Etablissements</td>
-   </tr>
+    <tr class='enTeteTabNonQuad'>
+        <td colspan='4'>Etablissements</td>
+    </tr>
 
     <?php foreach ($etablissements as $etab) : ?>
     <tr class='ligneTabNonQuad'>

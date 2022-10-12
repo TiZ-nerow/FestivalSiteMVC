@@ -91,14 +91,14 @@ function creerEtablissement($connexion, $id, $nom, $adresseRue, $codePostal,
 }
 
 
-function estUnIdEtablissement($connexion, $id)
+function estUnIdEtablissement($connexion, $id) dead
 {
    $req="select * from Etablissement where id='$id'";
    $rsEtab=$connexion->query($req);
    return $rsEtab->fetchAll();
 }
 
-function estUnNomEtablissement($connexion, $mode, $id, $nom)
+function estUnNomEtablissement($connexion, $mode, $id, $nom) dead
 {
    $nom=str_replace("'", "''", $nom);
    // S'il s'agit d'une création, on vérifie juste la non existence du nom sinon
