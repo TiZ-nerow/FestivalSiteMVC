@@ -4,14 +4,14 @@ namespace App\Controller;
 class StandController extends Controller
 {
 
-    public function show()
+    public function index()
     {
-
+        //$titre = "/consultationStand";
     }
 
     public function update()
     {
-
+        //$titre = "/modificationStandAttributions";
     }
 
 }

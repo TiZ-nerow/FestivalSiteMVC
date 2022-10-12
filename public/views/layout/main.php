@@ -25,19 +25,19 @@
     <table width="80%" cellpadding="0" cellspacing="0" class="tabMenu" align="center">
         <tr>
             <td class="menu">
-                <a href="/">Accueil</a>
+                <a href="?p=home">Accueil</a>
             </td>
 
             <td class="menu">
-                <a href="?p=etablissements.index">Gestion établissements</a>
+                <a href="?p=etablissement.index">Gestion établissements</a>
             </td>
 
             <td class="menu">
-                <a href="consultationAttributions.php">Attributions chambres</a>
+                <a href="?p=attribution.index">Attributions chambres</a>
             </td>
 
             <td class="menu">
-                <a href="consultationStand.php">Attribution stand</a>
+                <a href="?p=stand.index">Attribution stand</a>
             </td>
         </tr>
     </table>

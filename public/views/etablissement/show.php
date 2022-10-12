@@ -1,8 +1,4 @@
 <?php
-   $titre="/detailEtablissement";
-   include("_debut.inc.php");
-   include("_gestionBase.inc.php"); 
-   include("_controlesEtGestionErreurs.inc.php");
 
    echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
    <tr>
@@ -47,9 +43,9 @@
       $nombreChambresOffertes=$row['nombreChambresOffertes'];
 
    echo "
-   <table width='60%' cellspacing='0' cellpadding='0' align='center' 
+   <table width='60%' cellspacing='0' cellpadding='0' align='center'
    class='tabNonQuadrille'>
-      
+
       <tr class='enTeteTabNonQuad'>
          <td colspan='3'>$nom</td>
       </tr>
@@ -94,7 +90,7 @@
          <td> Responsable: </td>
          <td>$civiliteResponsable&nbsp; $nomResponsable&nbsp; $prenomResponsable
          </td>
-      </tr> 
+      </tr>
       <tr class='ligneTabNonQuad'>
          <td> Offre: </td>
          <td>$nombreChambresOffertes&nbsp;chambre(s)</td>

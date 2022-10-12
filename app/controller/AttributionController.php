@@ -4,14 +4,14 @@ namespace App\Controller;
 class AttributionController extends Controller
 {
 
-    public function show()
+    public function index()
     {
-
+        //$titre="/consultationAttributions";
     }
 
     public function update()
     {
-
+        //$titre="/modificationAttributions";
     }
 
 }

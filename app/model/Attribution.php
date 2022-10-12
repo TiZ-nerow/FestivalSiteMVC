@@ -8,31 +8,25 @@ class Attribution extends Model
 
     protected $table = 'attribution';
 
+    public static function existeAttributionsByEtab($etab_id)
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT * FROM {$instance->table} WHERE idEtab = ?", [$etab_id], get_called_class())->get();
+    }
+
+    // Retourne le nombre de chambres occupées pour l'id étab transmis
+    public static function obtenirNbOccupByEtab($etab_id)
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT IFNULL(sum(nombreChambres), 0) as totalChambresOccup FROM {$instance->table} WHERE idEtab = ?", [$etab_id], get_called_class())->first();
+    }
+
 }
 
 // FONCTIONS RELATIVES AUX ATTRIBUTIONS
-
-// Teste la présence d'attributions pour l'établissement transmis
-function existeAttributionsEtab($connexion, $id)
-{
-   $req="select * From Attribution where idEtab='$id'";
-   $rsAttrib=$connexion->query($req);
-   return $rsAttrib->fetchAll();
-}
-
-// Retourne le nombre de chambres occupées pour l'id étab transmis
-function obtenirNbOccup($connexion, $idEtab)
-{
-   $req="select IFNULL(sum(nombreChambres), 0) as totalChambresOccup from
-        Attribution where idEtab='$idEtab'";
-   $rsOccup=$connexion->query($req);
-   $lgOccup=$rsOccup->fetchAll();
-   foreach ($lgOccup as $row)
-   {
-      $chambre = $row['totalChambresOccup'];
-   }
-   return $chambre;
-}
+/*
 
 // Met à jour (suppression, modification ou ajout) l'attribution correspondant à
 // l'id étab et à l'id groupe transmis
@@ -84,4 +78,4 @@ function obtenirNbOccupGroupe($connexion, $idEtab, $idGroupe)
    }
    else
       return 0;
-}
+}*/

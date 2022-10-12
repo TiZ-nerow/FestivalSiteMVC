@@ -1,8 +1,4 @@
 <?php
-	$titre = "/consultationStand";
-	include("_debut.inc.php");
-	include("_gestionBase.inc.php"); 
-	include("_controlesEtGestionErreurs.inc.php");
 
 	echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
    <tr>
@@ -28,8 +24,8 @@
 		$rsStand=$connexion->query($req);
 		$lgStand=$rsStand->fetchAll();
 
-		echo"<table class = 'tabQuadrille' width = 40% cellspacing='0' cellpadding='0' align = 'center'> 
-			<tr class = 'enTeteTabQuad'> 
+		echo"<table class = 'tabQuadrille' width = 40% cellspacing='0' cellpadding='0' align = 'center'>
+			<tr class = 'enTeteTabQuad'>
 			<td align = 'left' width = 70%> <strong>groupe</strong></td>
 			<td align = 'center'> <strong>a un stand</Strong></td>
 			<td align = 'center'> <strong></Strong></td></tr>";
@@ -40,11 +36,11 @@
 			$stand=$row['stand'];
 
 			echo "<tr class = 'ligneTabNonQuad'>
-				<td width='52%' > $nomGroupe 
+				<td width='52%' > $nomGroupe
 				</td>";
 
 			// Si le groupe a un stand associé, affiche oui sinon non
-			if($stand) {	
+			if($stand) {
 				echo "<td align = 'center' width = 70% > Oui </td>";
 			}
 			else {

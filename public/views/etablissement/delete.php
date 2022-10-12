@@ -1,8 +1,4 @@
 <?php
-$titre="/suprressionEtablissement";
-include("_debut.inc.php");
-include("_gestionBase.inc.php"); 
-include("_controlesEtGestionErreurs.inc.php");
 
    echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
    <tr>
@@ -27,9 +23,9 @@ if (!$connexion)
    exit();
 }*/
 
-// SUPPRIMER UN ÉTABLISSEMENT 
+// SUPPRIMER UN ÉTABLISSEMENT
 
-$id=$_REQUEST['idEtab'];  
+$id=$_REQUEST['idEtab'];
 
 $lgEtab=obtenirDetailEtablissement($connexion, $id);
 foreach($lgEtab as $row)
@@ -39,10 +35,10 @@ foreach($lgEtab as $row)
 
 // Cas 1ère étape (on vient de listeEtablissements.php)
 
-if ($_REQUEST['action']=='demanderSupprEtab')    
+if ($_REQUEST['action']=='demanderSupprEtab')
 {
    echo "
-   <br><center><h5>Souhaitez-vous vraiment supprimer l'établissement $nom ? 
+   <br><center><h5>Souhaitez-vous vraiment supprimer l'établissement $nom ?
    <br><br>
    <a href='suppressionEtablissement.php?action=validerSupprEtab&amp;idEtab=$id'>
    Oui</a>&nbsp; &nbsp; &nbsp; &nbsp;

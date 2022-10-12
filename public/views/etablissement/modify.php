@@ -1,8 +1,4 @@
 <?php 
-$titre="/modificationEtablissement";
-include("_debut.inc.php");
-include("_gestionBase.inc.php"); 
-include("_controlesEtGestionErreurs.inc.php");
 
    echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
    <tr>
@@ -27,22 +23,22 @@ if (!$connexion)
    exit();
 }*/
 
-// MODIFIER UN ÉTABLISSEMENT 
+// MODIFIER UN ÉTABLISSEMENT
 
 // Déclaration du tableau des civilités
-$tabCivilite=array("M.","Mme","Melle");  
+$tabCivilite=array("M.","Mme","Melle");
 
 $id=$_REQUEST['idEtab']; //modification apportée ligne 87
 $action=$_REQUEST['action'];
 
 
-// Si on ne "vient" pas de ce formulaire, il faut récupérer les données à partir 
-// de la base (en appelant la fonction obtenirDetailEtablissement) sinon on 
+// Si on ne "vient" pas de ce formulaire, il faut récupérer les données à partir
+// de la base (en appelant la fonction obtenirDetailEtablissement) sinon on
 // affiche les valeurs précédemment contenues dans le formulaire
 if ($action=='demanderModifEtab')
 {
    $req=obtenirDetailEtablissement($connexion, $id);
-  
+
    foreach ($req as $row) {
       $nom=$row['nom'];
       $adresseRue=$row['adresseRue'];
@@ -59,7 +55,7 @@ if ($action=='demanderModifEtab')
 }
 else
 {
-   $nom=$_REQUEST['nom']; 
+   $nom=$_REQUEST['nom'];
    $adresseRue=$_REQUEST['adresseRue'];
    $codePostal=$_REQUEST['codePostal'];
    $ville=$_REQUEST['ville'];
@@ -71,12 +67,12 @@ else
    $prenomResponsable=$_REQUEST['prenomResponsable'];
    $nombreChambresOffertes=$_REQUEST['nombreChambresOffertes'];
 
-   verifierDonneesEtabM($connexion, $id, $nom, $adresseRue, $codePostal, $ville,  
-                        $tel, $nomResponsable, $nombreChambresOffertes);      
+   verifierDonneesEtabM($connexion, $id, $nom, $adresseRue, $codePostal, $ville,
+                        $tel, $nomResponsable, $nombreChambresOffertes);
    if (nbErreurs()==0)
-   {        
-      modifierEtablissement($connexion, $id, $nom, $adresseRue, $codePostal, $ville, 
-                            $tel, $adresseElectronique, $type, $civiliteResponsable, 
+   {
+      modifierEtablissement($connexion, $id, $nom, $adresseRue, $codePostal, $ville,
+                            $tel, $adresseElectronique, $type, $civiliteResponsable,
                             $nomResponsable, $prenomResponsable, $nombreChambresOffertes);
    }
 }
@@ -84,40 +80,40 @@ else
 echo "
 <form method='POST' action='modificationEtablissement.php?'>
    <input type='hidden' value='validerModifEtab' name='action'>
-   <table width='85%' cellspacing='0' cellpadding='0' align='center' 
+   <table width='85%' cellspacing='0' cellpadding='0' align='center'
    class='tabNonQuadrille'>
-   
+
       <tr class='enTeteTabNonQuad'>
          <td colspan='3'>$nom ($id)</td>
       </tr>
       <tr>
          <td><input type='hidden' value='$id' name='idEtab'></td>
       </tr>";
-      
+
       echo '
       <tr class="ligneTabNonQuad">
          <td> Nom*: </td>
-         <td><input type="text" value="'.$nom.'" name="nom" size="50" 
+         <td><input type="text" value="'.$nom.'" name="nom" size="50"
          maxlength="45"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Adresse*: </td>
-         <td><input type="text" value="'.$adresseRue.'" name="adresseRue" 
+         <td><input type="text" value="'.$adresseRue.'" name="adresseRue"
          size="50" maxlength="45"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Code postal*: </td>
-         <td><input type="text" value="'.$codePostal.'" name="codePostal" 
+         <td><input type="text" value="'.$codePostal.'" name="codePostal"
          size="4" maxlength="5"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Ville*: </td>
-         <td><input type="text" value="'.$ville.'" name="ville" size="40" 
+         <td><input type="text" value="'.$ville.'" name="ville" size="40"
          maxlength="35"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Téléphone*: </td>
-         <td><input type="text" value="'.$tel.'" name="tel" size ="20" 
+         <td><input type="text" value="'.$tel.'" name="tel" size ="20"
          maxlength="10"></td>
       </tr>
       <tr class="ligneTabNonQuad">
@@ -130,15 +126,15 @@ echo "
          <td>';
             if ($type==1)
             {
-               echo " 
-               <input type='radio' name='type' value='1' checked>  
+               echo "
+               <input type='radio' name='type' value='1' checked>
                Etablissement Scolaire
                <input type='radio' name='type' value='0'>  Autre";
              }
              else
              {
-                echo " 
-                <input type='radio' name='type' value='1'> 
+                echo "
+                <input type='radio' name='type' value='1'>
                 Etablissement Scolaire
                 <input type='radio' name='type' value='0' checked> Autre";
               }
@@ -152,7 +148,7 @@ echo "
             <td> Civilité*: </td>
             <td> <select name='civiliteResponsable'>";
                for ($i=0; $i<3; $i=$i+1)
-                  if ($tabCivilite[$i]==$civiliteResponsable) 
+                  if ($tabCivilite[$i]==$civiliteResponsable)
                   {
                      echo "<option selected>$tabCivilite[$i]</option>";
                   }
@@ -161,10 +157,10 @@ echo "
                      echo "<option>$tabCivilite[$i]</option>";
                   }
                echo '
-               </select>&nbsp; &nbsp; &nbsp; Nom*: 
+               </select>&nbsp; &nbsp; &nbsp; Nom*:
                <input type="text" value="'.$nomResponsable.'" name=
                "nomResponsable" size="26" maxlength="25">
-               &nbsp; &nbsp; &nbsp; Prénom: 
+               &nbsp; &nbsp; &nbsp; Prénom:
                <input type="text"  value="'.$prenomResponsable.'" name=
                "prenomResponsable" size="26" maxlength="25">
             </td>
@@ -175,7 +171,7 @@ echo "
             "nombreChambresOffertes" size ="2" maxlength="3"></td>
          </tr>
    </table>';
-   
+
    echo "
    <table align='center' cellspacing='15' cellpadding='0'>
       <tr>
@@ -189,10 +185,10 @@ echo "
          </td>
       </tr>
    </table>
-  
+
 </form>";
 
-// En cas de validation du formulaire : affichage des erreurs ou du message de 
+// En cas de validation du formulaire : affichage des erreurs ou du message de
 // confirmation
 if ($action=='validerModifEtab')
 {

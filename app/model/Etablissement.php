@@ -8,14 +8,18 @@ class Etablissement extends Model
 
     protected $table = 'etablissement';
 
-}
+    public function existeAttributions()
+    {
+        return Attribution::existeAttributionsByEtab($this->id);
+    }
 
-function obtenirReqEtablissements()
-{
-   $req="select id, nom, nombreChambresOffertes from Etablissement order by id";
-   return $req;
-}
+    public function obtenirNbOccup()
+    {
+        return Attribution::obtenirNbOccupByEtab($this->id)->totalChambresOccup;
+    }
 
+}
+/*
 function obtenirReqEtablissementsOffrantChambres()
 {
    $req="select id, nom, nombreChambresOffertes from Etablissement where
@@ -144,16 +148,4 @@ function estModifOffreCorrecte($connexion, $idEtab, $nombreChambres)
 {
    $nbOccup=obtenirNbOccup($connexion, $idEtab);
    return ($nombreChambres>=$nbOccup);
-}
-
-function ChambresMax($connexion, $idEtab)
-{
-   $req = "SELECT nombreChambresOffertes FROM Etablissement WHERE id = '$idEtab'";
-   $rsEtab = $connexion->query($req);
-   $lgEtab = $rsEtab->fetchAll();
-   foreach($lgEtab as $row)
-   {
-      $nbrMax = $row['nombreChambresOffertes'];
-   }
-   return $nbrMax;
-}
+}*/

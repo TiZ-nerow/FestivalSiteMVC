@@ -1,8 +1,4 @@
 <?php
-	$titre = "/modificationStandAttributions";
-	include("_debut.inc.php");
-	include("_gestionBase.inc.php"); 
-	include("_controlesEtGestionErreurs.inc.php");
 
 	echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
    			<tr>
@@ -45,9 +41,9 @@
 	echo "
 	<form method='POST' action='modificationStandAttributions.php?'>
    <input type='hidden' value='validerModifEtab' name='action'>
-   <table width='85%' cellspacing='0' cellpadding='0' align='center' 
+   <table width='85%' cellspacing='0' cellpadding='0' align='center'
    class='tabNonQuadrille'>
-   
+
       <tr class='enTeteTabNonQuad'>
          <td colspan='3'>($id)</td>
       </tr>

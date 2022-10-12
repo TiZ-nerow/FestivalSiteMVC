@@ -1,71 +1,23 @@
-<?php
-$titre="/creationEtablissement";
-include("_debut.inc.php");
-include("_gestionBase.inc.php");
-include("_controlesEtGestionErreurs.inc.php");
-
-   echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
-   <tr>
-   <td align='center'><a href='index.php'>Accueil ></a> <a href='listeEtablissements.php'> listeEtablissements ></a> creationEtablissement</td>
-   </tr>
+<table width='80%' cellpadding='0' cellspacing='0' align='center'>
+    <tr>
+        <td align='center'><a href='index.php'>Accueil ></a> <a href='listeEtablissements.php'> listeEtablissements ></a> creationEtablissement</td>
+    </tr>
 </table>
-<br>";
 
-// CONNEXION AU SERVEUR MYSQL PUIS SÉLECTION DE LA BASE DE DONNÉES festival
+<br>
 
-$connexion=connect();
-if (!$connexion)
-{
-   ajouterErreur("Echec de la connexion au serveur MySql");
-   afficherErreurs();
-   exit();
-}
-/*if (!selectBase($connexion))
-{
-   ajouterErreur("La base de données festival est inexistante ou non accessible");
-   afficherErreurs();
-   exit();
-}*/
-
-// CRÉER UN ÉTABLISSEMENT
-
-// Déclaration du tableau des civilités
-$tabCivilite=array("M.","Mme","Melle");
-
-$action=$_REQUEST['action'];
-
-// S'il s'agit d'une création et qu'on ne "vient" pas de ce formulaire (on
-// "vient" de ce formulaire uniquement s'il y avait une erreur), il faut définir
-// les champs à vide sinon on affichera les valeurs précédemment saisies
-if ($action=='demanderCreEtab')
-{
-   $id='';
-   $nom='';
-   $adresseRue='';
-   $ville='';
-   $codePostal='';
-   $tel='';
-   $adresseElectronique='';
-   $type=0;
-   $civiliteResponsable='Monsieur';
-   $nomResponsable='';
-   $prenomResponsable='';
-   $nombreChambresOffertes='';
-}
-else
-{
-   $id=$_REQUEST['id'];
-   $nom=$_REQUEST['nom'];
-   $adresseRue=$_REQUEST['adresseRue'];
-   $codePostal=$_REQUEST['codePostal'];
-   $ville=$_REQUEST['ville'];
-   $tel=$_REQUEST['tel'];
-   $adresseElectronique=$_REQUEST['adresseElectronique'];
-   $type=$_REQUEST['type'];
-   $civiliteResponsable=$_REQUEST['civiliteResponsable'];
-   $nomResponsable=$_REQUEST['nomResponsable'];
-   $prenomResponsable=$_REQUEST['prenomResponsable'];
-   $nombreChambresOffertes=$_REQUEST['nombreChambresOffertes'];
+   $id='';$_REQUEST['id']
+   $nom='';$_REQUEST['nom']
+   $adresseRue='';$_REQUEST['adresseRue']
+   $ville='';$_REQUEST['ville']
+   $codePostal='';$_REQUEST['codePostal']
+   $tel='';$_REQUEST['tel']
+   $adresseElectronique='';$_REQUEST['adresseElectronique']
+   $type=0;$_REQUEST['type']
+   $civiliteResponsable='Monsieur';$_REQUEST['civiliteResponsable']
+   $nomResponsable='';$_REQUEST['nomResponsable']
+   $prenomResponsable='';$_REQUEST['prenomResponsable']
+   $nombreChambresOffertes='';$_REQUEST['nombreChambresOffertes']
 
    verifierDonneesEtabC($connexion, $id, $nom, $adresseRue, $codePostal, $ville,
                         $tel, $nomResponsable, $nombreChambresOffertes);

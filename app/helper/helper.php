@@ -66,8 +66,7 @@ function verifierDonneesEtabC($connexion, $id, $nom, $adresseRue, $codePostal,
       // et de chiffres, une erreur est générée
       if (!estChiffresOuEtLettres($id))
       {
-         ajouterErreur
-         ("L'identifiant doit comporter uniquement des lettres non accentuées et des chiffres");
+         ajouterErreur("L'identifiant doit comporter uniquement des lettres non accentuées et des chiffres");
       }
       else
       {
