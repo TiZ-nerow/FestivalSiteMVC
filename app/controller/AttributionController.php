@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Models\Etablissement;
+use App\Models\Attribution;
 
 class AttributionController extends Controller
 {
@@ -22,19 +23,9 @@ class AttributionController extends Controller
 
     public function store()
     {
+        Attribution::modifierAttribChamb(get('idEtab'), get('idGroupe'), get('nbChambres'));
 
-        $action=$_REQUEST['action'];
-
-        // Si l'action est validerModifAttrib (cas où l'on vient de la page
-        // donnerNbChambres.php) alors on effectue la mise à jour des attributions dans
-        // la base
-        if ($action=='validerModifAttrib')
-        {
-           $idEtab=$_REQUEST['idEtab'];
-           $idGroupe=$_REQUEST['idGroupe'];
-           $nbChambres=$_REQUEST['nbChambres'];
-           modifierAttribChamb($connexion, $idEtab, $idGroupe, $nbChambres);
-        }
+        return $this->redirect('attribution.modify');
     }
 
 }

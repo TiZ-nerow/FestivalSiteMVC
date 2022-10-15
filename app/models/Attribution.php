@@ -39,32 +39,20 @@ class Attribution extends Model
         return $lgAttribGroupe ? $lgAttribGroupe->nombreChambres : 0;
     }
 
+    public static function modifierAttribChamb($etab_id, $groupe_id, $nbChambres)
+    {
+        $instance = self::getInstance();
+
+        $lgAttrib = $instance->db->prepare("SELECT COUNT(*) AS nombreAttribGroupe FROM {$instance->table} WHERE idEtab = ? AND idGroupe = ?", [$etab_id, $groupe_id], get_called_class())->first();
+        //var_dump($lgAttrib->nombreAttribGroupe);exit;
+        if (!$nbChambres)
+            return $instance->db->prepare("DELETE FROM {$instance->table} WHERE idEtab = ? AND idGroupe = ?", [$etab_id, $groupe_id]);
+        else {
+            if ($lgAttrib->nombreAttribGroupe)
+                return $instance->db->prepare("UPDATE {$instance->table} SET nombreChambres = ? WHERE idEtab = ? AND idGroupe = ?", [$nbChambres, $etab_id, $groupe_id]);
+            else
+                return $instance->db->prepare("INSERT INTO {$instance->table} VALUES(?, ?, ?)", [$etab_id, $groupe_id, $nbChambres]);
+        }
+    }
+
 }
-
-// FONCTIONS RELATIVES AUX ATTRIBUTIONS
-/*
-
-// Met à jour (suppression, modification ou ajout) l'attribution correspondant à
-// l'id étab et à l'id groupe transmis
-function modifierAttribChamb($connexion, $idEtab, $idGroupe, $nbChambres)
-{
-   $req="select count(*) as nombreAttribGroupe from Attribution where idEtab=
-        '$idEtab' and idGroupe='$idGroupe'";
-   $rsAttrib=$connexion->query($req);
-   $lgAttrib=$rsAttrib->fetchAll();
-   foreach($lgAttrib as $row)
-   {
-      $nombreAttribGroupe = $row['nombreAttribGroupe'];
-   }
-   if ($nbChambres==0)
-      $req="delete from Attribution where idEtab='$idEtab' and idGroupe='$idGroupe'";
-   else
-   {
-      if ($nombreAttribGroupe!=0)
-         $req="update Attribution set nombreChambres=$nbChambres where idEtab=
-              '$idEtab' and idGroupe='$idGroupe'";
-      else
-         $req="insert into Attribution values('$idEtab','$idGroupe', $nbChambres)";
-   }
-   $connexion->query($req);
-}*/

@@ -24,15 +24,20 @@
         <td width='25%'><?= $groupe->nom ?></td>
         <td width='10%'><?= $groupe->nomPays ?></td>
         <?php foreach(\App\Models\Etablissement::obtenirReqEtablissementsOffrantChambres() as $etab) : ?>
-        <?php if ($nbOccupGroupe = \App\Models\Attribution::obtenirNbOccupGroupe($etab->id, $groupe->id)) : ?>
-        <td class='reserve'><a href='donnerNbChambres.php?idEtab=$etab->id&idGroupe=$groupe->id&nbChambres=<?= ($etab->nbLibre() + $nbOccupGroupe) ?>'><?= $nbOccupGroupe ?></a></td>
-        <?php else : ?>
-        <td class='reserveSiLien'>
-            <?php if ($etab->nbLibre()) : ?>
-            <a href='donnerNbChambres.php?idEtab=$etab->id&idGroupe=$groupe->id&nbChambres=$etab->nbLibre()'>__</a>
-            <?php endif ?>
+        <td class='<?= \App\Models\Attribution::obtenirNbOccupGroupe($etab->id, $groupe->id) ? 'reserve' : 'reserveSiLien' ?>'>
+            <form method='POST' action='?p=attribution.store' onchange="this.submit()">
+                <input type='hidden' value='<?= $etab->id ?>' name='idEtab'>
+                <input type='hidden' value='<?= $groupe->id ?>' name='idGroupe'>
+                <center>
+                        <select name='nbChambres'>
+                            <?php for ($i = 0; $i <= ($etab->nbLibre() + \App\Models\Attribution::obtenirNbOccupGroupe($etab->id, $groupe->id)); $i++) : ?>
+                            <option value="<?= $i ?>" <?= \App\Models\Attribution::obtenirNbOccupGroupe($etab->id, $groupe->id) == $i ? 'selected' : null ?>><?= $i ?></option>
+                            <?php endfor ?>
+                        </select>
+                    </h5>
+                </center>
+            </form>
         </td>
-        <?php endif ?>
         <?php endforeach ?>
     </tr>
     <?php endforeach ?>

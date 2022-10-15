@@ -7,6 +7,7 @@ class StandController extends Controller
     public function index()
     {
         //$titre = "/consultationStand";
+        return $this->render('stand.index');
     }
 
     public function modify()
