@@ -11,7 +11,7 @@
         <td colspan='4'>Etablissements</td>
     </tr>
 
-    <?php foreach ($etablissements as $etab) : ?>
+    <?php foreach ($etabs as $etab) : ?>
     <tr class='ligneTabNonQuad'>
         <td width='52%'><?= $etab->nom ?></td>
 
@@ -20,12 +20,12 @@
         </td>
 
         <td width='16%' align='center'>
-            <a href='?p=etablissement.update&idEtab=<?= $etab->id ?>'>Modifier</a>
+            <a href='?p=etablissement.modify&idEtab=<?= $etab->id ?>'>Modifier</a>
         </td>
 
         <?php if (!$etab->existeAttributions()) : ?>
         <td width='16%' align='center'>
-            <a href='?p=etablissement.delete&idEtab=<?= $etab->id ?>'>Supprimer</a>
+            <a href='?p=etablissement.delete&idEtab=<?= $etab->id ?>' onclick="return confirm('Souhaitez-vous vraiment supprimer l\'établissement <?= $etab->nom ?> ?')">Supprimer</a>
         </td>
         <?php else : ?>
         <td width='16%'><?= $etab->obtenirNbOccup() == $etab->nombreChambresOffertes ? 'Complet' : $etab->obtenirNbOccup() . ' chambres occupés' ?></td>

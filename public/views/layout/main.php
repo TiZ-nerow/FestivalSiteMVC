@@ -29,15 +29,15 @@
             </td>
 
             <td class="menu">
-                <a href="?p=etablissement.index">Gestion établissements</a>
+                <a href="?p=etablissement">Gestion établissements</a>
             </td>
 
             <td class="menu">
-                <a href="?p=attribution.index">Attributions chambres</a>
+                <a href="?p=attribution">Attributions chambres</a>
             </td>
 
             <td class="menu">
-                <a href="?p=stand.index">Attribution stand</a>
+                <a href="?p=stand">Attribution stand</a>
             </td>
         </tr>
     </table>

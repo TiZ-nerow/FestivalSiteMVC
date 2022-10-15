@@ -1,5 +1,5 @@
 <?php
-namespace App\Model;
+namespace App\Models;
 
 use \Core\Model\Model;
 
@@ -18,6 +18,25 @@ class Etablissement extends Model
         return Attribution::obtenirNbOccupByEtab($this->id)->totalChambresOccup;
     }
 
+    public function obtenirGroupes()
+    {
+        return Attribution::obtenirReqGroupesEtab($this->id);
+    }
+
+    public static function obtenirNbEtabOffrantChambres()
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT COUNT(*) AS nombreEtabOffrantChambres FROM {$instance->table} WHERE nombreChambresOffertes != ?", [0], get_called_class())->first()->nombreEtabOffrantChambres;
+    }
+
+    public static function obtenirReqEtablissementsAyantChambresAttribuees()
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->query("SELECT DISTINCT id, nom, nombreChambresOffertes FROM {$instance->table}, Attribution WHERE id = idEtab ORDER BY id", get_called_class())->get();
+    }
+
 }
 /*
 function obtenirReqEtablissementsOffrantChambres()
@@ -27,12 +46,7 @@ function obtenirReqEtablissementsOffrantChambres()
    return $req;
 }
 
-function obtenirReqEtablissementsAyantChambresAttribuées()
-{
-   $req="select distinct id, nom, nombreChambresOffertes from Etablissement,
-         Attribution where id = idEtab order by id";
-   return $req;
-}
+
 
 function obtenirDetailEtablissement($connexion, $id)
 {
@@ -127,25 +141,4 @@ function obtenirNbEtab($connexion)
    }
    return $nombreEtab;
 }
-
-function obtenirNbEtabOffrantChambres($connexion)
-{
-   $req="select count(*) as nombreEtabOffrantChambres from Etablissement where
-         nombreChambresOffertes!=0";
-   $rsEtabOffrantChambres=$connexion->query($req);
-   $lgEtabOffrantChambres=$rsEtabOffrantChambres->fetchAll();
-   foreach ($lgEtabOffrantChambres as $row)
-   {
-      $EtabOffrantChambres = $row['nombreEtabOffrantChambres'];
-   }
-   return $EtabOffrantChambres;
-}
-
-// Retourne false si le nombre de chambres transmis est inférieur au nombre de
-// chambres occupées pour l'établissement transmis
-// Retourne true dans le cas contraire
-function estModifOffreCorrecte($connexion, $idEtab, $nombreChambres)
-{
-   $nbOccup=obtenirNbOccup($connexion, $idEtab);
-   return ($nombreChambres>=$nbOccup);
-}*/
+*/

@@ -1,11 +1,10 @@
-<?php
-
-echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
-   <tr>
-   <td align='center'><a href='index.php'>Accueil ></a> <a href='consultationAttributions.php'> consultationAttributions ></a> modificationAttributions</td>
-   </tr>
+<table width='80%' cellpadding='0' cellspacing='0' align='center'>
+    <tr>
+        ""<td align='center'><a href='index.php'>Accueil ></a> <a href='consultationAttributions.php'> consultationAttributions ></a> modificationAttributions</td>
+    </tr>
 </table>
-<br>";
+
+<br>
 
 // CONNEXION AU SERVEUR MYSQL PUIS SÉLECTION DE LA BASE DE DONNÉES festival
 

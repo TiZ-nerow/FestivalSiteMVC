@@ -7,11 +7,13 @@ class AttributionController extends Controller
     public function index()
     {
         //$titre="/consultationAttributions";
+        return $this->render('attribution.index');
     }
 
-    public function update()
+    public function modify()
     {
         //$titre="/modificationAttributions";
+        return $this->render('attribution.modify');
     }
 
 }

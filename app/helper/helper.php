@@ -26,27 +26,28 @@ function estChiffresOuEtLettres($valeur)
 
 // Fonction qui vérifie la saisie lors de la modification d'un établissement.
 // Pour chaque champ non valide, un message est ajouté à la liste des erreurs
-function verifierDonneesEtabM($connexion, $id, $nom, $adresseRue, $codePostal,
-                              $ville, $tel, $nomResponsable, $nombreChambresOffertes)
+function verifierDonneesEtabM()
 {
-   if ($nom=="" || $adresseRue=="" || $codePostal=="" || $ville=="" ||
-       $tel=="" || $nomResponsable=="" || $nombreChambresOffertes=="")
-   {
-      ajouterErreur("Chaque champ suivi du caractère * est obligatoire");
-   }
-   if ($nom!="" && estUnNomEtablissement($connexion, 'M', $id, $nom))
-   {
-      ajouterErreur("L'établissement $nom existe déjà");
-   }
-   if ($codePostal!="" && !estUnCp($codePostal))
-   {
-      ajouterErreur("Le code postal doit comporter 5 chiffres");
-   }
-   if ($nombreChambresOffertes!="" && (!estEntier($nombreChambresOffertes) ||
-       !estModifOffreCorrecte($connexion, $id, $nombreChambresOffertes)))
-   {
-      ajouterErreur("La valeur de l'offre est non entière ou inférieure aux attributions effectuées");
-   }
+    $obligatoires = ['nom', 'adresseRue', 'codePostal', 'ville', 'tel', 'nomResponsable', 'nombreChambresOffertes'];
+    foreach ($obligatoires as $key) {
+        if (is_null(get($key)) || get($key) == '') {
+            ajouterErreur("Chaque champ suivi du caractère * est obligatoire");
+            break;
+        }
+    }
+
+    $exist = \App\Model\Etablissement::exist(['nom' => get('nom')]);
+    if (get('nom') != '' && $exist && $exist->id != get('idEtab')) {
+        ajouterErreur('L\'établissement' . get('nom') . ' existe déjà');
+    }
+
+    if (get('codePostal') != '' && !estUnCp(get('codePostal'))) {
+        ajouterErreur("Le code postal doit comporter 5 chiffres");
+    }
+
+    if (get('nombreChambresOffertes') != '' && (!estEntier(get('nombreChambresOffertes')) || \App\Model\Etablissement::find(get('idEtab'))->obtenirNbOccup() >= get('nombreChambresOffertes'))) {
+        ajouterErreur("La valeur de l'offre est non entière ou inférieure aux attributions effectuées");
+    }
 }
 
 // Fonction qui vérifie la saisie lors de la création d'un établissement.
@@ -72,7 +73,7 @@ function verifierDonneesEtabC()
     }
 
     if (get('nom') != '' && \App\Model\Etablissement::exist(['nom' => get('nom')])) {
-        ajouterErreur('L\'établissement' . get('nom') . 'existe déjà');
+        ajouterErreur('L\'établissement' . get('nom') . ' existe déjà');
     }
 
     if (get('codePostal') != '' && !estUnCp(get('codePostal'))) {

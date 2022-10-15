@@ -9,7 +9,7 @@ class StandController extends Controller
         //$titre = "/consultationStand";
     }
 
-    public function update()
+    public function modify()
     {
         //$titre = "/modificationStandAttributions";
     }

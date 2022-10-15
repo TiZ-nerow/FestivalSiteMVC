@@ -98,12 +98,12 @@ class Model
         $attributes[] = $this->id;
         $sql_part = implode(',', $sql_parts);
 
-        return $this->prepare("UPDATE {$this->table} SET $sql_part WHERE id = ?", $attributes);
+        return $this->db->prepare("UPDATE {$this->table} SET $sql_part WHERE id = ?", $attributes);
     }
 
     public function delete()
     {
-        return $this->prepare("DELETE FROM {$this->table} WHERE id = ?", [$this->id]);
+        return $this->db->prepare("DELETE FROM {$this->table} WHERE id = ?", [$this->id]);
     }
 
 }

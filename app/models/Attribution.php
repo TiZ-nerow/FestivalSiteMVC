@@ -1,5 +1,5 @@
 <?php
-namespace App\Model;
+namespace App\Models;
 
 use \Core\Model\Model;
 
@@ -21,6 +21,22 @@ class Attribution extends Model
         $instance = self::getInstance();
 
         return $instance->db->prepare("SELECT IFNULL(sum(nombreChambres), 0) as totalChambresOccup FROM {$instance->table} WHERE idEtab = ?", [$etab_id], get_called_class())->first();
+    }
+
+    public static function obtenirReqGroupesEtab($etab_id)
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT DISTINCT * FROM {$instance->table}, Groupe WHERE id = idGroupe AND idEtab = ?", [$etab_id], get_called_class())->get();
+    }
+
+    public static function obtenirNbOccupGroupe($etab_id, $groupe_id)
+    {
+        $instance = self::getInstance();
+
+        $lgAttribGroupe = $instance->db->prepare("SELECT nombreChambres FROM {$instance->table} WHERE idEtab = ? AND idGroupe = ?", [$etab_id, $groupe_id], get_called_class())->first();
+
+        return $lgAttribGroupe ? $lgAttribGroupe->nombreChambres : 0;
     }
 
 }
@@ -51,31 +67,4 @@ function modifierAttribChamb($connexion, $idEtab, $idGroupe, $nbChambres)
          $req="insert into Attribution values('$idEtab','$idGroupe', $nbChambres)";
    }
    $connexion->query($req);
-}
-
-// Retourne la requête permettant d'obtenir les id et noms des groupes affectés
-// dans l'établissement transmis
-function obtenirReqGroupesEtab($id)
-{
-   $req="select distinct Groupe.id, Groupe.nom, nomPays from Groupe, Attribution where
-        Attribution.idGroupe=Groupe.id and idEtab='$id'";
-   return $req;
-}
-
-// Retourne le nombre de chambres occupées par le groupe transmis pour l'id étab
-// et l'id groupe transmis
-function obtenirNbOccupGroupe($connexion, $idEtab, $idGroupe)
-{
-   $req="select nombreChambres From Attribution where idEtab='$idEtab'
-        and idGroupe='$idGroupe'";
-   $rsAttribGroupe=$connexion->query($req);
-   if ($lgAttribGroupe=$rsAttribGroupe->fetchAll()){
-      foreach ($lgAttribGroupe as $row)
-      {
-         $nombreChambres = $row['nombreChambres'];
-      }
-      return $nombreChambres;
-   }
-   else
-      return 0;
 }*/
