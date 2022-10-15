@@ -15,6 +15,13 @@ class Groupe extends Model
         return $instance->db->prepare("SELECT id, nom, nomPays FROM {$instance->table} WHERE hebergement = ? ORDER BY id", ['O'], get_called_class())->get();
     }
 
+    public static function obtenirNbrStandAttribues()
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT COUNT(stand) AS nbrStandAttrib FROM {$instance->table} WHERE stand != ?", [0], get_called_class())->first()->nbrStandAttrib;
+    }
+
 }
 
 // FONCTIONS RELATIVES AUX GROUPES
@@ -46,18 +53,6 @@ function obtenirStand()
 {
    $req="select id, nom, stand from groupe";
    return $req;
-}
-
-function obtenirNbrStandAttribues($connexion)
-{
-   $req="select count(stand) as nbrStandAttrib from Groupe where stand != 0";
-   $rsStandAttrib=$connexion->query($req);
-   $lgStandAttrib=$rsStandAttrib->fetchAll();
-   foreach ($lgStandAttrib as $row)
-   {
-      $StandAttrib = $row['nbrStandAttrib'];
-   }
-   return $StandAttrib;
 }
 
 function modifierStand($connexion, $id, $stand)

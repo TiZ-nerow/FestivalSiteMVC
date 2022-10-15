@@ -1,87 +1,37 @@
-<?php
+<table width='80%' cellpadding='0' cellspacing='0' align='center'>
+	<tr>
+		<td align='center'><a href='?p=home'>Accueil</a> > <a href='?p=stand'>consultationStand</a> > modificationStandAttributions</td>
+	</tr>
+</table>
 
-	echo "<table width='80%' cellpadding='0' cellspacing='0' align='center'>
-   			<tr>
-   				<td align='center'><a href='index.php'>Accueil ></a> <a href='consultationStand.php'> consultationStand ></a> modificationStandAttributions</td>
-   			</tr>
-		</table>
-	<br>";
+<br>
 
-// CONNEXION AU SERVEUR MYSQL PUIS SÉLECTION DE LA BASE DE DONNÉES festival
+<form method='POST' action='?p=stand.update'>
+	<table width='85%' cellspacing='0' cellpadding='0' align='center' class='tabNonQuadrille'>
+		<tr class='enTeteTabNonQuad'>
+			<td colspan='3'>(<?= $groupe->id ?>)</td>
+		</tr>
 
-	$connexion=connect();
-	if (!$connexion)
-	{
-   		ajouterErreur("Echec de la connexion au serveur MySql");
-   		afficherErreurs();
-   		exit();
-	}
+		<tr>
+			<td><input type='hidden' value='<?= $groupe->id ?>' name='idGroupe'></td>
+		</tr>
 
-// MODIFIER L'ATTRIBUTION D'UN STAND
-	$id=$_REQUEST['idGroupe'];
-	$action=$_REQUEST['action'];
+		<tr class="ligneTabNonQuad">
+			<td> Stand*: </td>
+			<td><input type="text" value="<?= get('stand', $stand) ?>" name="stand"></td>
+		</tr>
 
-	if ($action=='demanderModifEtab')
-	{
-		$req=obtenirDetailGroupe($connexion, $id);
-		foreach ($req as $row) {
-	      $stand=$row['stand'];
-	   	}
-	}
-	else
-	{
-	    $stand=$_REQUEST['stand'];
+		<tr>
+			<td align='right'><input type='submit' value='Valider' name='valider'></td>
+			<td align='left'><input type='reset' value='Annuler' name='annuler'></td>
+		</tr>
 
-	    if (nbErreurs()==0)
-		{
-			modifierStand($connexion, $id, $stand);
-		}
-	}
+		<tr>
+			<td colspan='2' align='center'><a href='?p=stand'>Retour</a></td>
+		</tr>
+	</table>
+</form>
 
-	echo "
-	<form method='POST' action='modificationStandAttributions.php?'>
-   <input type='hidden' value='validerModifEtab' name='action'>
-   <table width='85%' cellspacing='0' cellpadding='0' align='center'
-   class='tabNonQuadrille'>
-
-      <tr class='enTeteTabNonQuad'>
-         <td colspan='3'>($id)</td>
-      </tr>
-      <tr>
-         <td><input type='hidden' value='$id' name='idGroupe'></td>
-      </tr>";
-
-    echo '
-      <tr class="ligneTabNonQuad">
-         <td> Stand*: </td>
-         <td><input type="text" value="'.$stand.'" name="stand"></td>
-      </tr>';
-
-    echo "
-   <table align='center' cellspacing='15' cellpadding='0'>
-      <tr>
-         <td align='right'><input type='submit' value='Valider' name='valider'>
-         </td>
-         <td align='left'><input type='reset' value='Annuler' name='annuler'>
-         </td>
-      </tr>
-      <tr>
-         <td colspan='2' align='center'><a href='consultationStand.php'>Retour</a>
-         </td>
-      </tr>
-   </table>
-	</form>";
-
-if ($action=='validerModifEtab')
-{
-   if (nbErreurs()!=0)
-   {
-      afficherErreurs();
-   }
-   else
-   {
-      echo "
-      <h5><center>La modification de l'établissement a été effectuée</center></h5>";
-   }
-}
-?>
+<?php if (get('erreurs')) : ?>
+    <?= afficherErreurs() ?>
+<?php endif ?>
