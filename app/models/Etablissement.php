@@ -23,6 +23,11 @@ class Etablissement extends Model
         return Attribution::obtenirReqGroupesEtab($this->id);
     }
 
+    public function nbLibre()
+    {
+        return $this->nombreChambresOffertes - $this->obtenirNbOccup();
+    }
+
     public static function obtenirNbEtabOffrantChambres()
     {
         $instance = self::getInstance();
@@ -37,17 +42,15 @@ class Etablissement extends Model
         return $instance->db->query("SELECT DISTINCT id, nom, nombreChambresOffertes FROM {$instance->table}, Attribution WHERE id = idEtab ORDER BY id", get_called_class())->get();
     }
 
+    public static function obtenirReqEtablissementsOffrantChambres()
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT DISTINCT id, nom, nombreChambresOffertes FROM {$instance->table} WHERE nombreChambresOffertes != ? ORDER BY id", [0], get_called_class())->get();
+    }
+
 }
 /*
-function obtenirReqEtablissementsOffrantChambres()
-{
-   $req="select id, nom, nombreChambresOffertes from Etablissement where
-         nombreChambresOffertes!=0 order by id";
-   return $req;
-}
-
-
-
 function obtenirDetailEtablissement($connexion, $id)
 {
    $req="select * from Etablissement where id=:id";

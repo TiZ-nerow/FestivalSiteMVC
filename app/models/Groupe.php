@@ -8,16 +8,17 @@ class Groupe extends Model
 
     protected $table = 'groupe';
 
+    public static function obtenirReqIdNomGroupesAHeberger()
+    {
+        $instance = self::getInstance();
+
+        return $instance->db->prepare("SELECT id, nom, nomPays FROM {$instance->table} WHERE hebergement = ? ORDER BY id", ['O'], get_called_class())->get();
+    }
+
 }
 
 // FONCTIONS RELATIVES AUX GROUPES
-
-function obtenirReqIdNomGroupesAHeberger()
-{
-   $req="select id, nom, nomPays from Groupe where hebergement='O' order by id";
-   return $req;
-}
-
+/*
 function obtenirNomGroupe($connexion, $id)
 {
    $req="select nom from Groupe where id='$id' order by nom";
@@ -64,4 +65,4 @@ function modifierStand($connexion, $id, $stand)
    $stand=str_replace("'","''", $stand);
    $req="update Groupe set stand='$stand' where id='$id'";
    $connexion->query($req);
-}
+}*/
