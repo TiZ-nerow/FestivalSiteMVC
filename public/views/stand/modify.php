@@ -18,7 +18,7 @@
 
 		<tr class="ligneTabNonQuad">
 			<td> Stand*: </td>
-			<td><input type="text" value="<?= get('stand', $stand) ?>" name="stand"></td>
+			<td><input type="text" value="<?= get('stand', $groupe->stand) ?>" name="stand"></td>
 		</tr>
 
 		<tr>

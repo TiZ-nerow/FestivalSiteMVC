@@ -6,7 +6,7 @@
 
 <br>
 
-<?php if (false /*\App\Models\Groupe::obtenirNbrStandAttribues()*/) : ?>
+<?php if (\App\Models\Groupe::obtenirNbrStandAttribues()) : ?>
 <table class='tabQuadrille' width="40%" cellspacing='0' cellpadding='0' align='center'>
 	<tr class='enTeteTabQuad'>
 		<td align='left' width = 70%><strong>groupe</strong></td>
@@ -17,7 +17,7 @@
 	<?php foreach (\App\Models\Groupe::all() as $groupe) : ?>
 	<tr class = 'ligneTabNonQuad'>
 		<td width='52%'><?= $groupe->nom ?></td>
-		<td align = 'center' width = 70% ><?= false /*$groupe->stand*/ ? 'Oui' : 'Non' ?></td>
+		<td align = 'center' width = 70% ><?= $groupe->stand ? 'Oui' : 'Non' ?></td>
 		<td width='16%' align='center'><a href='?p=stand.modify&idGroupe=<?= $groupe->id ?>'>Modifier</a></td>
 	</tr>
 	<?php endforeach ?>

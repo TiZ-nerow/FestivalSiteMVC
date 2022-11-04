@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Models\Groupe;
+use \Core\Session\FlashService;
 
 class StandController extends Controller
 {
@@ -16,19 +17,25 @@ class StandController extends Controller
     {
         //$titre = "/modificationStandAttributions";
         return $this->render('stand.modify', [
-            //'groupe' => Groupe::find(get('idGroupe')),
+            'groupe' => Groupe::find(get('idGroupe')),
         ]);
     }
 
     public function update()
     {
-        /*if (nbErreurs()==0)
-		{
-			$stand = modifierStand($connexion, get('idGroupe'), $stand);
-		}*/
-        FlashService::set('success', 'La modification de l\'établissement a été effectuée');
+        $groupe = Groupe::find(get('idGroupe'));
 
-        return $this->show();
+        if (get('erreurs')) {
+            return $this->modify();
+        }
+
+        $groupe->update([
+            'stand' => get('stand'),
+        ]);
+
+        FlashService::set('success', 'Le stand a bien été modifié');
+
+        return $this->modify();
     }
 
 }
