@@ -6,7 +6,6 @@
 
 <br>
 
-<?php if (\App\Models\Groupe::obtenirNbrStandAttribues()) : ?>
 <table class='tabQuadrille' width="40%" cellspacing='0' cellpadding='0' align='center'>
 	<tr class='enTeteTabQuad'>
 		<td align='left' width = 70%><strong>groupe</strong></td>
@@ -22,4 +21,3 @@
 	</tr>
 	<?php endforeach ?>
 </table>
-<?php endif ?>

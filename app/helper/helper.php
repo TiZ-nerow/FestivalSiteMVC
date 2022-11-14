@@ -36,7 +36,7 @@ function verifierDonneesEtabM()
         }
     }
 
-    $exist = \App\Model\Etablissement::exist(['nom' => get('nom')]);
+    $exist = \App\Models\Etablissement::exist(['nom' => get('nom')]);
     if (get('nom') != '' && $exist && $exist->id != get('idEtab')) {
         ajouterErreur('L\'établissement' . get('nom') . ' existe déjà');
     }
@@ -45,7 +45,7 @@ function verifierDonneesEtabM()
         ajouterErreur("Le code postal doit comporter 5 chiffres");
     }
 
-    if (get('nombreChambresOffertes') != '' && (!estEntier(get('nombreChambresOffertes')) || \App\Model\Etablissement::find(get('idEtab'))->obtenirNbOccup() >= get('nombreChambresOffertes'))) {
+    if (get('nombreChambresOffertes') != '' && (!estEntier(get('nombreChambresOffertes')) || \App\Models\Etablissement::find(get('idEtab'))->obtenirNbOccup() >= get('nombreChambresOffertes'))) {
         ajouterErreur("La valeur de l'offre est non entière ou inférieure aux attributions effectuées");
     }
 }
@@ -67,12 +67,12 @@ function verifierDonneesEtabC()
     if (get('id') != '' && !estChiffresOuEtLettres(get('id'))) {
         ajouterErreur("L'identifiant doit comporter uniquement des lettres non accentuées et des chiffres");
     } else {
-        if (\App\Model\Etablissement::find(get('id'))) {
+        if (\App\Models\Etablissement::find(get('id'))) {
             ajouterErreur('L\'établissement ' . get('id') . ' existe déjà');
         }
     }
 
-    if (get('nom') != '' && \App\Model\Etablissement::exist(['nom' => get('nom')])) {
+    if (get('nom') != '' && \App\Models\Etablissement::exist(['nom' => get('nom')])) {
         ajouterErreur('L\'établissement' . get('nom') . ' existe déjà');
     }
 
